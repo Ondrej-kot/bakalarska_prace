@@ -3,10 +3,13 @@
 require('propojeni_databaze_local.php');
 session_start();
 ?>
-<html>
+<html lang="cs">
     <head>
         <title>PEF - Elektornické dokumenty </title>
         <link rel="stylesheet" href="uni_zadost_style.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="UTF-8">
         <meta name="keywords" content="Provozně ekonomická fakulta, ČZU, uznávání žádostí, elektronické dokumenty, schvalování, uznání předmětu, opakování ročníku">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +24,7 @@ session_start();
 
         class PDF extends tfpdf {
 
-// Page header
+            // Page header
             function Header() {
                 // Logo
                 $this->Image('img/logo.png', 10, 6, 80);
@@ -34,7 +37,7 @@ session_start();
                 $this->Write(0, '_________________________________________________________________________________________________________');
             }
 
-// Page footer
+            // Page footer
             function Footer() {
                 // Position at 1.5 cm from bottom
                 $this->SetY(-15);
@@ -45,9 +48,7 @@ session_start();
             }
 
             function headerTable() {
-
                 $this->SetXY(35, 30);
-
                 $this->SetFont('timesb', '', 12);
                 $this->Cell(40, 10, 'Příjmení:');
                 $this->SetFont('times', '', 12);
@@ -106,10 +107,10 @@ session_start();
                 $this->SetXY(25, 60);
             }
 
-            function data() {
+         /*   function data() {
                 
             }
-
+         */
             function maincontent() {
                 $this->SetXY(80, 64);
                 $this->SetFont('timesb', '', 19);
@@ -173,7 +174,6 @@ session_start();
                     $this->SetXY(133, $o);
                     $this->Write(0, $_POST['mark' . $y]);
                 }
-
 
                 $this->SetXY(20, 112);
                 $this->SetLineWidth(0.2);
@@ -247,7 +247,7 @@ session_start();
         $pdf->Hr();
         $pdf->headerTable();
         $pdf->maincontent();
-        $pdf->data();
+        //$pdf->data();
         $pdf->endofpage();
 
         $path = './pdf/' . $_SESSION['study_id'] . '_' . date("d.m.Y") . '_' . $_SESSION['time'] . '_uznani' . '.pdf';
@@ -270,11 +270,25 @@ session_start();
             $sql->bindParam(':link', $path);
             $sql->bindParam(':id', $_SESSION['iduser']);
             $sql->execute();
+
+            $sql3 = "SELECT idhistory FROM history WHERE link = '" . $path . "'";
+            $overeni = $conn->query($sql3);
+            $row = $overeni->fetch();
+
+            try {
+                for ($i = 0; $i < $_POST['clicks']; $i++) {
+                    $sql2 = $conn->prepare("INSERT INTO history_has_subject (history_idhistory,subject_code,checked) VALUES (:history,:subject_code,'0');");
+                    $sql2->bindParam(':history', $row['idhistory']);
+                    $sql2->bindParam(':subject_code', $_POST['kod_predmetu' . $i]);
+                    $sql2->execute();
+                }
+            } catch (Throwable $e) {
+                header('Location: ./uznani_predmetu.php');
+            }
         }
         ?>
 
         <main id="maincontent">
-
             <h1>Formulář úspěšně vygenerován</h1>
             <p id="notice">Formulář byl úspěšně vygenerován a záslán na studijní oddělení PEF.</p>
             <div id="navigation">
@@ -291,6 +305,6 @@ session_start();
             </div>
 
         </main>
-        <?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>
     </body>
 </html>

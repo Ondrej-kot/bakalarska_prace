@@ -1,51 +1,46 @@
-<head>
-    <link rel="stylesheet" href="header.css">
-</head>
 <header>
-    <nav class="navbar">
-        <a href="./index.php"><div class="logo"><img id="logo" src="./img/logo_b.png"><div id="logo_text">Provozně ekonomická fakulta</div></div></a>
-
-        <ul class="nav-links">
-            <input type="checkbox" id="checkbox_toggle" />
+    <div class="navbar">
+        <a href="./index.php"><div class="logo"><img id="logo" src="./img/logo_b.png" alt="logo školy"><div id="logo_text">Provozně ekonomická fakulta</div></div></a>
+        <nav class="nav-links">
+            <input type="checkbox" id="checkbox_toggle">
             <label for="checkbox_toggle" class="hamburger">&#9776;</label>
-            <!-- NAVIGATION MENUS -->
+            <!-- NAVIGATION MENU -->
             <div class="menu">
-                <a href="./uznani_predmetu.php"><li>Uznání předmětu</li></a>
-                <a href="./presun_predmetu.php"><li>Přesun předmětu</li></a>
-                <li class="services">
+                <a href="./uznani_predmetu.php"><div>Uznání předmětu</div></a>
+                <a href="./presun_predmetu.php"><div>Přesun předmětu</div></a>
+                <div class="services">
                     <a>Další žádosti</a>
                     <!-- DROPDOWN MENU -->
                     <ul class="dropdown">
-                        <a href="./uni_zadost.php"><li>Univerzání žádost</li></a>
-                        <a href="./opakovani_rocniku.php"><li>Opakování ročníku</li></a>
-                        <a href="./prihlaska_promoce.php"><li>Přihláška k promoci</li></a>
+                        <li><a href="./uni_zadost.php">Univerzání žádost</a></li>
+                        <li><a href="./opakovani_rocniku.php">Opakování ročníku</a></li>
+                        <li><a href="./prihlaska_promoce.php">Přihláška k promoci</a></li>
                     </ul>
-                </li>
+                </div>
                 <?php if (isset($_SESSION['iduser'])) { ?>
-                    <a href="./account.php"><li><?php
+                    <a href="./account.php"><div><?php
                             echo $_SESSION['name'];
                             echo ' ';
                             echo $_SESSION['surname'];
-                            ?></li></a>
+                            ?></div></a>
                 <?php } ?>
                 <?php if (!isset($_SESSION['iduser'])) { ?>
-                    <a onclick="openForm()"><li>Přihlášení</li></a>
-<?php } ?>
+                    <a onclick="openForm()"><div>Přihlášení</div></a>
+                <?php } ?>
             </div>
-        </ul>
-    </nav>
-
+        </nav>
+    </div>
     <div id="pozadi">         
         <div id="prihlaseni">
             <span onclick="closeForm()" id="exit">×</span>
             <div id="whitebck">
                 <form id="login" action="login.php" method="POST">
                     <div class="container">
-                        <h1>Přihlásit se</h1>
+                        <h2>Přihlásit se</h2>
                         <p id="pozn">Pro přihlášení vyplňte pole níže.</p>
                         <hr>
                         <label for="e-mail"><b>Uživatelské jméno</b></label>
-                        <input id="w1" type="email" placeholder="xuzivatel001" id="e-mail" name="email" required>
+                        <input type="email" placeholder="xuzivatel001@studenti.czu.cz" id="e-mail" name="email" required>
                         <label for="w2"><b>Heslo</b></label>
                         <input id="w2" type="password" placeholder="Heslo" name="password" required>
                         <a id="forgotpass" href="/zapom_heslo.php" >Zapomněli jste heslo?</a>

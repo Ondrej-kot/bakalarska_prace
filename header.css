@@ -11,7 +11,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 3%;
     color: #fff;
 }
 #logo {
@@ -37,16 +37,16 @@ a {
 }
 .menu {
     display: flex;
-    gap: 25px;
+    gap: 40px;
     font-size: 18px;
 }
-.menu li:hover {
+.menu div:hover {
     border-radius: 5px;
     transition: 0.2s ease;
     background-color:#bf0d0d;
     text-shadow: 1px 1px black;
 }
-.menu li {
+.menu div {
     padding: 5px 14px;
     cursor: pointer;
 }
@@ -60,7 +60,7 @@ a {
     position: absolute; /*WITH RESPECT TO PARENT*/
     display: none;
     border: 2px solid black;
-    top: 38px;
+    top: 20px;
     left: -15%;
 }
 .dropdown li + li {
@@ -71,6 +71,16 @@ a {
     width: 8em;
     text-align: center;
     cursor: pointer;
+}
+.dropdown li a {
+    cursor: pointer;
+    }
+
+.dropdown li:hover {
+    border-radius: 5px;
+    transition: 0.2s ease;
+    background-color:#bf0d0d;
+    text-shadow: 1px 1px black;
 }
 .services:hover .dropdown {
     display: block;
@@ -191,18 +201,20 @@ input[type=checkbox]{
     @-webkit-keyframes bar {
         from {
             height: 0px;
+            font-size: 0px;
         }
         to {
-            height: 175px;
+            height: 147px;
+            font-size:18px;
         }
     }
-    .menu li:hover {
+    .menu div:hover {
         display: inline-block;
         transition: 0.3s ease;
         border-top: 3px solid white;
         border-bottom: 3px solid white;
     }
-    .menu li + li {
+    .menu div + div {
         margin-top: 12px;
     }
     input[type=checkbox]:checked ~ .menu{

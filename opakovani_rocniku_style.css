@@ -37,7 +37,7 @@ input[type=text], select {
     box-sizing: border-box;
 }
 input[type=submit] {
-    width: 19%;
+    min-width: 19%;
     background-color: #9b0000;
     color: white;
     padding: 14px 20px;
@@ -47,11 +47,8 @@ input[type=submit] {
     cursor: pointer;
     font-size: 18px;
     position: relative;
-    margin-top: 2%;
-    left: 40%;
-}
-#preview {
-   
+    margin: auto;
+    display: block;
 }
 #preview img:hover {
     transform: scale(4);
@@ -67,7 +64,7 @@ input[type=submit] {
 }
 #year {
 
-position: relative;
+    position: relative;
 }
 #tabulka {
     margin-left: 2%;
@@ -77,8 +74,8 @@ position: relative;
 }
 .next ul {
     width: 100%;
-    margin-left: 10%;
     list-style-type: none;
+    margin-top: -1%;
     background-color: white;
     cursor: pointer;
     color:black;
@@ -111,4 +108,94 @@ position: relative;
 }
 #add_subjects p {
     padding-top: 4%;
+}
+#hint {
+    display: none;
+}
+#justsayin {
+    display: none;
+}
+@media only screen and (max-width: 800px) {
+    input[type=submit] {
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        position: relative;
+        margin: auto;
+        display: flex;
+    }
+    #preview {
+        display: none;
+    }
+    #add_subjects {
+        margin: 2% 20% 2% 20%;
+    }
+    #add_subjects p {
+        padding-top: 4%;
+    }
+    #add_subjects img {
+        margin-top: 6%;
+    }
+    #prvni {
+        display: grid;
+    }
+    #year {
+        width: 100%;
+    }
+    #blank {
+        display: none;
+    }
+    #tabulka {
+        position: relative;
+        margin: auto;
+    }
+    #hint {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+    }
+    .next {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .next:nth-child(odd) {
+        .div2 {
+            grid-area: 1 / 2 / 2 / 3;
+        }
+    }
+    .next:nth-child(even) {
+        .div1 {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+    }
+    #tabulka th {
+        display: none;
+    }
+    #tabulka td:nth-child(1) {
+        color: #bf0d0d;
+    }
+    #tabulka td:nth-child(2) {
+        color: #bf0d0d;
+    }
+    #tabulka td:nth-child(3) {
+        color: blue;
+    }
+    #tabulka td:nth-child(4) {
+        color: blue;
+    }
+    #red {
+        color: #bf0d0d;
+    }
+    #blue {
+        color: blue;
+    }
+    #justsayin {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
 }

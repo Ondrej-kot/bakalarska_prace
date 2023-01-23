@@ -1,19 +1,23 @@
 <?php
-
 require('propojeni_databaze_local.php');
+error_reporting(0);
+// get user input
 $email = $_POST["email"];
 $password = $_POST["password"];
 $corpsw = 0;
+// see if user password match with database value
+$lolko = "SELECT count(*) FROM user WHERE email = '" . $email . "'";
+$pocet = $conn->query($lolko)->fetchColumn();
+
 
 $sql = "SELECT iduser,name,surname,birth_date,year,email,tel_number,study_id,password,residence_idresidence,field_idfield,city_idcity FROM user WHERE email = '" . $email . "'";
 $overeni = $conn->query($sql);
-$pocet = $overeni->rowCount($sql);
 $row = $overeni->fetch();
-
 
 if (password_verify($password, $row['password'])) {
     $corpsw = 1;
 };
+
 
 $sql1 = "SELECT street,house_number FROM residence WHERE idresidence = '" . $row['residence_idresidence'] . "'";
 $overeni1 = $conn->query($sql1);
@@ -27,7 +31,8 @@ $sql3 = "SELECT name FROM field WHERE idfield = '" . $row['field_idfield'] . "'"
 $overeni3 = $conn->query($sql3);
 $row3 = $overeni3->fetch();
 
-/*if ($pocet == 1 && $corpsw == 1) READY PRO SIFROVANI HESLA*/
+ //TOTO JE NA ZÍSKÁVÁNÍ INFO DO SEASION
+
 if ($pocet == 1 && $corpsw == 1) {
     session_start();
     $_SESSION['iduser'] = $row['iduser'];

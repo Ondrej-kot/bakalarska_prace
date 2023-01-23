@@ -3,10 +3,13 @@
 require('propojeni_databaze_local.php');
 session_start();
 ?>
-<html>
+<html lang="cs">
     <head>
         <title>PEF - Elektornické dokumenty </title>
         <link rel="stylesheet" href="uni_zadost_style.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="UTF-8">
         <meta name="keywords" content="Provozně ekonomická fakulta, ČZU, uznávání žádostí, elektronické dokumenty, schvalování, uznání předmětu, opakování ročníku">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,24 +24,26 @@ session_start();
 
         class PDF extends tfpdf {
 
-            // záhlaví
+            // header
             function Header() {
                 // Logo
                 $this->Image('img/logo.png', 10, 6, 80);
-                // prázdná buňka pro posunutí loga
+                // blank space
                 $this->Cell(80);
-                // konec řádku
+                // end of line
                 $this->Ln(20);
             }
-            // zápatí
+
+            // footer
             function Footer() {
-                // Pozice 15 bodu od spodní strany
+                // 15 pixels from bottom
                 $this->SetY(-15);
                 $this->SetFont('Times', 'I', 8);
-                // číslo stránky
+                // page number
                 $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
             }
 
+            //table header
             function headerTable() {
                 $this->SetXY(25, 30);
                 $this->SetFont('timesb', '', 14);
@@ -161,6 +166,7 @@ session_start();
                 $this->Ln();
             }
 
+            // inserting user data
             function maincontent() {
                 $this->SetXY(40, 90);
                 $this->SetFont('timesb', '', 24);
@@ -194,6 +200,7 @@ session_start();
                 }
             }
 
+            //footer
             function endofpage() {
                 $this->SetXY(35, 256);
                 $this->Write(0, date("d.m.Y"));
@@ -249,10 +256,24 @@ session_start();
             $sql->bindParam(':link', $path);
             $sql->bindParam(':id', $_SESSION['iduser']);
             $sql->execute();
+
+            $sql3 = "SELECT idhistory FROM history WHERE link = '" . $path . "'";
+            $overeni = $conn->query($sql3);
+            $row = $overeni->fetch();
+
+            try {
+                for ($i = 0; $i < $_POST['clicks']; $i++) {
+                    $sql2 = $conn->prepare("INSERT INTO history_has_subject (history_idhistory,subject_code,checked) VALUES (:history,:subject_code,'0');");
+                    $sql2->bindParam(':history', $row['idhistory']);
+                    $sql2->bindParam(':subject_code', $_POST['kod_predmetu' . $i]);
+                    $sql2->execute();
+                }
+            } catch (Throwable $e) {
+                header('Location: ./presun_predmetu.php');
+            }
         }
         ?>
         <main id="maincontent">
-
             <h1>Formulář úspěšně vygenerován</h1>
             <p id="notice">Formulář byl úspěšně vygenerován a záslán na studijní oddělení PEF.</p>
             <div id="navigation">

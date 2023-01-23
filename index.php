@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <?php require('propojeni_databaze_local.php');
-session_start();?>
-<html>
+session_start();
+?>
+<html lang="cs">
     <head>
-        <title>PEF - Elektornické dokumenty </title>
+        <title>PEF - Elektornické dokumenty</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="UTF-8">
         <meta name="keywords" content="Provozně ekonomická fakulta, ČZU, uznávání žádostí, elektronické dokumenty, schvalování, uznání předmětu, opakování ročníku">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +17,7 @@ session_start();?>
         <meta name="author" content="Ondřej Kotyk">
     </head>
     <body>
-        <?php include 'header.php'; ?>
+<?php include 'header.php'; ?>
         <main id="maincontent">
 
             <div>
@@ -40,6 +44,6 @@ session_start();?>
             </div>
 
         </main>
-        <?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>
     </body>
 </html>

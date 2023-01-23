@@ -3,10 +3,13 @@
 require('propojeni_databaze_local.php');
 session_start();
 ?>
-<html>
+<html lang="cs">
     <head>
         <title>PEF - Elektornické dokumenty </title>
         <link rel="stylesheet" href="uni_zadost_style.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="UTF-8">
         <meta name="keywords" content="Provozně ekonomická fakulta, ČZU, uznávání žádostí, elektronické dokumenty, schvalování, uznání předmětu, opakování ročníku">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +24,7 @@ session_start();
 
         class PDF extends tfpdf {
 
-// Page header
+            // Page header
             function Header() {
                 // Logo
                 $this->Image('img/logo.png', 10, 6, 80);
@@ -33,8 +36,7 @@ session_start();
                 // Line break
                 $this->Ln(20);
             }
-
-// Page footer
+            // Page footer
             function Footer() {
                 // Position at 1.5 cm from bottom
                 $this->SetY(-15);
@@ -42,24 +44,24 @@ session_start();
                 // Page number
                 $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
             }
-
+            // table
             function headerTable() {
 
                 $this->SetXY(25, 30);
                 $this->SetFont('timesb', '', 14);
                 $this->Cell(40, 10, 'Příjmení:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(47, 35);
                 $this->Write(0, '_____________________');
                 $this->SetXY(55, 34);
                 $this->Write(0, $_SESSION['surname']);
                 $this->SetFont('timesb', '', 14);
-                
+
                 $this->SetXY(105, 30);
                 $this->Cell(40, 10, 'Ročník:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(122, 35);
                 $this->Write(0, '________________________');
                 $this->SetXY(128, 34);
@@ -70,17 +72,17 @@ session_start();
                 $this->SetFont('timesb', '', 14);
                 $this->Cell(40, 10, 'Jméno:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(42, 45);
                 $this->Write(0, '_______________________');
                 $this->SetXY(48, 44);
                 $this->Write(0, $_SESSION['name']);
                 $this->SetFont('timesb', '', 14);
-                
+
                 $this->SetXY(105, 40);
                 $this->Cell(40, 10, 'Studijní obor:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(135, 45);
                 $this->Write(0, '___________________');
                 $this->SetXY(136, 44);
@@ -93,17 +95,17 @@ session_start();
                 $this->SetFont('timesb', '', 14);
                 $this->Cell(40, 10, 'Datum narození:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(60, 55);
                 $this->Write(0, '________________');
                 $this->SetXY(65, 54);
                 $this->Write(0, $_SESSION['birth_date']);
                 $this->SetFont('timesb', '', 14);
-                
+
                 $this->SetXY(105, 50);
                 $this->Cell(40, 10, 'ID studia:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(127, 55);
                 $this->Write(0, '______________________');
                 $this->SetXY(135, 54);
@@ -114,18 +116,18 @@ session_start();
                 $this->SetFont('timesb', '', 14);
                 $this->Cell(40, 10, 'Adresa:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(43, 65);
                 $this->Write(0, '______________________');
                 $this->SetXY(43, 65);
                 $this->SetFont('times', '', 12);
                 $this->Write(0, $_SESSION['street'] . " " . $_SESSION['house_number'] . " " . $_SESSION['city']);
                 $this->SetFont('timesb', '', 14);
-                
+
                 $this->SetXY(105, 60);
                 $this->Cell(40, 10, 'E-mail:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(122, 65);
                 $this->Write(0, '________________________');
                 $this->SetXY(123, 64);
@@ -136,17 +138,17 @@ session_start();
                 $this->SetFont('timesb', '', 14);
                 $this->Cell(40, 10, 'PSČ:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(38, 75);
                 $this->Write(0, '________________________');
                 $this->SetXY(42, 74);
                 $this->Write(0, $_SESSION['postcode']);
                 $this->SetFont('timesb', '', 14);
-                
+
                 $this->SetXY(105, 70);
                 $this->Cell(40, 10, 'Telefon:');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(123, 75);
                 $this->Write(0, '________________________');
                 $this->SetXY(128, 74);
@@ -159,7 +161,7 @@ session_start();
                 $this->SetFont('timesb', '', 14);
                 $this->Write(0, 'Předmět žádosti: ');
                 $this->SetFont('times', '', 14);
-                
+
                 $this->SetXY(75, 90);
                 $this->Write(0, $_POST["predmet"]);
 
@@ -246,7 +248,7 @@ session_start();
         $type = 'Univerzální žádost';
         $date = date("d.m.Y");
         $name = $_SESSION['study_id'] . '_' . date("d.m.Y") . '_' . $_SESSION['time'] . '_uni_zadost';
-       
+
         $exists = "SELECT count(*) from history WHERE name = '" . $name . "';";
         $count = $conn->query($exists)->fetchColumn();
 

@@ -3,10 +3,13 @@
 require('propojeni_databaze_local.php');
 session_start();
 ?>
-<html>
+<html lang="cs">
     <head>
         <title>PEF - Elektornické dokumenty </title>
         <link rel="stylesheet" href="uni_zadost_style.css">
+        <link rel="stylesheet" href="header.css">
+        <link rel="stylesheet" href="footer.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="UTF-8">
         <meta name="keywords" content="Provozně ekonomická fakulta, ČZU, uznávání žádostí, elektronické dokumenty, schvalování, uznání předmětu, opakování ročníku">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +24,7 @@ session_start();
 
         class PDF extends tfpdf {
 
-// Page header
+            // Page header
             function Header() {
                 // Logo
                 $this->Image('img/logo.png', 10, 6, 80);
@@ -31,16 +34,16 @@ session_start();
                 $this->Ln(20);
             }
 
-// Page footer
+            // Page footer
             function Footer() {
                 // Position at 1.5 cm from bottom
                 $this->SetY(-15);
-
                 $this->SetFont('Times', 'I', 8);
                 // Page number
                 $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
             }
 
+            // Info about person
             function headerTable() {
 
                 $this->SetXY(25, 30);
@@ -157,6 +160,7 @@ session_start();
                 $this->Ln();
             }
 
+            // blank table with rows and table headers
             function maincontent() {
                 $this->SetXY(40, 90);
                 $this->SetFont('timesb', '', 24);
@@ -186,8 +190,9 @@ session_start();
                 $this->SetX(20);
             }
 
+            // input from user
             function data() {
-                //left side
+                //left side (unsuccesful subjects)
                 $this->SetFont('times', '', 12);
                 $y = 123;
                 $z = 128;
@@ -199,7 +204,7 @@ session_start();
                     $y = $y + 12;
                     $z = $z + 12;
                 }
-                //right side
+                //right side (succesful subjects)
                 $o = 123;
                 $p = 128;
                 for ($r = 13; $r <= 23; $r++) { //generate subjects
@@ -213,7 +218,8 @@ session_start();
                 $this->SetFont('times', '', 14);
             }
 
-            function endofpage() { // footer
+            // footer
+            function endofpage() {
                 $this->SetXY(35, 261);
                 $this->Write(0, date("d.m.Y"));
 
@@ -268,32 +274,33 @@ session_start();
             }
 
         }
-        //vytvoření nového formuláře
+
+        //create new form
         $pdf = new PDF();
-        //přídání podporováného fontu
+        //add font for czech language
         $pdf->AddFont('times', '', 'times.ttf', true);
         $pdf->AddFont('timesb', '', 'timesbd.ttf', true);
         $pdf->SetFont('times', '', 14);
         $pdf->AliasNbPages();
-        //přidání nové strany
+        //add new page
         $pdf->AddPage();
-        //hlavička obsahující osobní údaje
+        //header with info
         $pdf->headerTable();
-        //tabulka předmětů
+        //subject table
         $pdf->maincontent();
         $pdf->data();
-        //zápatí
+        //footer
         $pdf->endofpage();
-        //poslední strana podpisů
+        //aproval page
         $pdf->lastpage();
-
+        // saving files with unique names
         $path = './pdf/' . $_SESSION['study_id'] . '_' . date("d.m.Y") . '_' . $_SESSION['time'] . '_opakovani' . '.pdf';
         $pdf->Output($path, 'F');
 
         $type = 'Opakování ročníku';
         $date = date("d.m.Y");
         $name = $_SESSION['study_id'] . '_' . date("d.m.Y") . '_' . $_SESSION['time'] . '_opakovani';
-
+        // failsafe in case people refresh page
         $exists = "SELECT count(*) from history WHERE name = '" . $name . "';";
         $count = $conn->query($exists)->fetchColumn();
 
